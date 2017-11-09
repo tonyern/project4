@@ -314,21 +314,23 @@ public class InfantFrame extends JFrame
             add(subfieldLabel, layoutConst);
 
             /** Right column  */
-            // Adding trial list
+            /** Adding JScrollPane */
+            // Adding trialScroller
             layoutConst.gridx = 1;
             layoutConst.gridy = 0;
-            layoutConst.gridwidth = COLUMN_FIELD_WIDTH;
-            add(trialList, layoutConst);
-            // Adding field list
+            layoutConst.insets = new Insets(90, 90, 90, 90);
+            add(trialScroller, layoutConst);
+            // Adding fieldScroller
             layoutConst.gridx = 1;
             layoutConst.gridy = 1;
-            layoutConst.gridwidth = COLUMN_FIELD_WIDTH;
-            add(fieldList, layoutConst);
-            // Adding subfield list
+            layoutConst.insets = new Insets(90, 90, 90, 90);
+            add(fieldScroller, layoutConst);
+            // Adding subfieldScroller
             layoutConst.gridx = 1;
             layoutConst.gridy = 2;
-            layoutConst.gridwidth = COLUMN_FIELD_WIDTH;
-            add(subfieldList, layoutConst);
+            layoutConst.insets = new Insets(90, 90, 90, 90);
+            add(subfieldScroller, layoutConst);
+            
             
             // Background color of the panel
             this.setBackground(Color.PINK);
@@ -410,16 +412,16 @@ public class InfantFrame extends JFrame
         private JLabel averageLabel = new JLabel("Average:");
 
         // JTextfield
-        JTextField infantIDField = new JTextField();
-        JTextField fieldNameField = new JTextField();
-        JTextField subfieldNameField = new JTextField();
-        JTextField maxValueField = new JTextField();
-        JTextField maxWeekField = new JTextField();
-        JTextField maxTimeField = new JTextField();
-        JTextField minValueField = new JTextField();
-        JTextField minWeekField = new JTextField();
-        JTextField minTimeField = new JTextField();
-        JTextField averageValueField = new JTextField();
+        JTextField infantIDField = new JTextField(COLUMN_FIELD_WIDTH);
+        JTextField fieldNameField = new JTextField(COLUMN_FIELD_WIDTH);
+        JTextField subfieldNameField = new JTextField(COLUMN_FIELD_WIDTH);
+        JTextField maxValueField = new JTextField(COLUMN_FIELD_WIDTH);
+        JTextField maxWeekField = new JTextField(COLUMN_FIELD_WIDTH);
+        JTextField maxTimeField = new JTextField(COLUMN_FIELD_WIDTH);
+        JTextField minValueField = new JTextField(COLUMN_FIELD_WIDTH);
+        JTextField minWeekField = new JTextField(COLUMN_FIELD_WIDTH);
+        JTextField minTimeField = new JTextField(COLUMN_FIELD_WIDTH);
+        JTextField averageValueField = new JTextField(COLUMN_FIELD_WIDTH);
         
         /**
          * Constructor
