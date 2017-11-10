@@ -1,0 +1,65 @@
+private void updateSelections()
+        {
+            ////////////////
+            // Trial list
+            
+            // Clear all elements
+            this.trialListModel.clear();
+            
+            // Adding week something in string
+            for (Trial trial : infant)
+            {
+                this.trialListModel.addElement(trial.toString());
+            }
+            
+            /////////////////////
+            // Field list
+            
+            // Clear all elements
+            this.fieldListModel.clear();
+            
+            // Check for infant size to make sure things are in it
+            if (infant.getSize() > 0)
+            {
+                this.fieldMapper = infant.getItem(0).getFieldMapper();
+                
+                // Loop through and display the parts of the body for stats
+                for (String bodyParts: this.fieldMapper)
+                {
+                    this.fieldListModel.addElement(bodyParts);
+                }
+            }
+            // If not then null
+            else
+            {
+                this.fieldMapper = null;
+            }
+            
+            // Update the subfields
+            this.updateSubfieldSelections();
+        }
+
+////////////////// Not finished with this one. /////////////////////
+
+private void updateSubfieldSelections()
+        {
+            // TODO We need to check for empty subfields like time not having x, y, z.
+            
+            // Clear all elements
+            this.subfieldListModel.clear();
+            
+            for (String element: infant)
+            {
+                if (fieldListModel != null)
+                {
+                    this.subfieldListModel.addElement(element);
+                }
+                else
+                {
+                    this.subfieldListModel.addElement("scalar");
+                }
+            }
+            
+            // Tell the rest of the frame that it needs to update
+            InfantFrame.this.update();
+        }
