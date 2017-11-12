@@ -99,6 +99,8 @@ public class InfantFrame extends JFrame
             fileChooser = new JFileChooser(new File("./data"));
             fileChooser.setFileFilter(filter);
 
+            // Set menu bar name for testing.
+            menuOpen.setName("MenuOpen");
             // Action listener for file open
             menuOpen.addActionListener(new ActionListener() 
             {
@@ -120,18 +122,24 @@ public class InfantFrame extends JFrame
                             // Save the components of the selected file
                             String directory = file.getParent();
                             String fname = file.getName();
-
+                            
+                            // No data loaded then open a message dialog box to indicate an error
+                            if (file.equals(null))
+                            {
+                                JOptionPane.showMessageDialog(fileChooser, "No Data Found");
+                            }
+                            
                             // Do the loading work: the first two characters are the Infant ID
                             loadData(directory, fname);
                             
                             // Return the cursor to standard form
                             InfantFrame.this.setCursor(null);
 
-                            // No data loaded then open a message dialog box to indicate an error
-                            if (directory == null && fname == null)
-                            {
-                                JOptionPane.showMessageDialog(fileChooser, "No Data Found");
-                            }
+//                            // No data loaded then open a message dialog box to indicate an error
+//                            if (directory.equals(null) && fname.equals(null))
+//                            {
+//                                JOptionPane.showMessageDialog(fileChooser, "No Data Found");
+//                            }
                             
                             // Update the frame
                             InfantFrame.this.update();
@@ -247,42 +255,31 @@ public class InfantFrame extends JFrame
 
             ////////////////
             // Selection Listeners
-            ListSelectionModel trialTable = trialList.getSelectionModel();
-            trialTable.addListSelectionListener(new ListSelectionListener()
+            trialList.addListSelectionListener(new ListSelectionListener()
             {
                 public void valueChanged(ListSelectionEvent e) 
                 {
-                    if (!trialTable.isSelectionEmpty())
-                    {
-                        int selectedTable = trialTable.getMinSelectionIndex();
-                        JOptionPane.showMessageDialog(null, "Selected Table " + selectedTable);
-                    }
+                    // Update fields and frame.
+                    updateSelections();
+                    InfantFrame.this.update();
                 }
             });
             
-            ListSelectionModel fieldTable = fieldList.getSelectionModel();
-            fieldTable.addListSelectionListener(new ListSelectionListener()
+            fieldList.addListSelectionListener(new ListSelectionListener()
             {
                 public void valueChanged(ListSelectionEvent e) 
                 {
-                    if (!fieldTable.isSelectionEmpty())
-                    {
-                        int selectedTable = fieldTable.getMinSelectionIndex();
-                        JOptionPane.showMessageDialog(null, "Selected Table " + selectedTable);
-                    }
+                    // Update subfield.
+                    updateSubfieldSelections();
                 }
             });
             
-            ListSelectionModel subfieldTable = subfieldList.getSelectionModel();
-            subfieldTable.addListSelectionListener(new ListSelectionListener()
+            subfieldList.addListSelectionListener(new ListSelectionListener()
             {
                 public void valueChanged(ListSelectionEvent e) 
                 {
-                    if (!subfieldTable.isSelectionEmpty())
-                    {
-                        int selectedTable = subfieldTable.getMinSelectionIndex();
-                        JOptionPane.showMessageDialog(null, "Selected Table " + selectedTable);
-                    }
+                    // Update frame.
+                    InfantFrame.this.update();
                 }
             });
 
@@ -295,42 +292,35 @@ public class InfantFrame extends JFrame
             // Layout position
             this.setLayout(new GridBagLayout());
             GridBagConstraints layoutConst = new GridBagConstraints();
+            layoutConst.insets = new Insets(30, 30, 30, 30);
 
             /** Left Column  */
             // Adding trial label
             layoutConst.gridx = 0;
             layoutConst.gridy = 0;
-            layoutConst.insets = new Insets(90, 90, 90, 90);
             add(trialLabel, layoutConst);
             // Adding field label
             layoutConst.gridx = 0;
             layoutConst.gridy = 1;
-            layoutConst.insets = new Insets(90, 90, 90, 90);
             add(fieldLabel, layoutConst);
             // Adding subfield label
             layoutConst.gridx = 0;
             layoutConst.gridy = 2;
-            layoutConst.insets = new Insets(90, 90, 90, 90);
             add(subfieldLabel, layoutConst);
-
+            
             /** Right column  */
-            /** Adding JScrollPane */
-            // Adding trialScroller
+            // Adding trial scroller
             layoutConst.gridx = 1;
             layoutConst.gridy = 0;
-            layoutConst.insets = new Insets(90, 90, 90, 90);
             add(trialScroller, layoutConst);
-            // Adding fieldScroller
+            // Adding field scroller
             layoutConst.gridx = 1;
             layoutConst.gridy = 1;
-            layoutConst.insets = new Insets(90, 90, 90, 90);
             add(fieldScroller, layoutConst);
-            // Adding subfieldScroller
+            // Adding subfield scroller
             layoutConst.gridx = 1;
             layoutConst.gridy = 2;
-            layoutConst.insets = new Insets(90, 90, 90, 90);
             add(subfieldScroller, layoutConst);
-            
             
             // Background color of the panel
             this.setBackground(Color.PINK);
@@ -356,15 +346,34 @@ public class InfantFrame extends JFrame
             // Clear all elements
             this.trialListModel.clear();
             
-            // TODO: complete implementation
-            
+            // Adding week something in string
+            for (Trial trial : infant)
+            {
+                this.trialListModel.addElement(trial.toString());
+            }
             
             /////////////////////
             // Field list
-
-            // TODO: complete implementation (the fieldMapper will be useful here, if one exists)
+            
             // Clear all elements
             this.fieldListModel.clear();
+            
+            // Check for infant size to make sure things are in it
+            if (infant.getSize() > 0)
+            {
+                this.fieldMapper = infant.getItem(0).getFieldMapper();
+                
+                // Loop through and display the parts of the body for stats
+                for (String bodyParts: this.fieldMapper)
+                {
+                    this.fieldListModel.addElement(bodyParts);
+                }
+            }
+            // If not then null
+            else
+            {
+                this.fieldMapper = null;
+            }
             
             // Update the subfields
             this.updateSubfieldSelections();
@@ -376,15 +385,31 @@ public class InfantFrame extends JFrame
          * This method is called any time there is a change to the selected field.
          */
         private void updateSubfieldSelections()
-        {
-            // TODO: complete implementation
+        { 
             // Clear all elements
             this.subfieldListModel.clear();
-
+            String userPressedAField = fieldList.getSelectedValue();
+            
+            for (String subfield: fieldMapper.getField(userPressedAField))
+            {
+                // Adding the x, y, z.
+                this.subfieldListModel.addElement(subfield);
+               
+                if (!subfield.equals(""))
+                {
+                    // Adding the x, y, z.
+    	            this.subfieldListModel.addElement(subfield);
+                }
+                else
+                {
+                    // If the field contains no subfields.
+                    this.subfieldListModel.addElement("scalar");
+                }
+            }
+            
             // Tell the rest of the frame that it needs to update
             InfantFrame.this.update();
         }
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -449,109 +474,90 @@ public class InfantFrame extends JFrame
             // Layout is it right and setting the positions
             this.setLayout(new GridBagLayout());
             GridBagConstraints layoutConst = new GridBagConstraints();
+            layoutConst.insets = new Insets(30, 30, 30, 30);
             
             /** Adding the labels.  */
             // Adding infantID label
             layoutConst.gridx = 0;
             layoutConst.gridy = 0;
-            layoutConst.insets = new Insets(30, 30, 30, 30);
             add(infantIDLabel, layoutConst);
             // Adding fieldname label
             layoutConst.gridx = 0;
             layoutConst.gridy = 1;
-            layoutConst.insets = new Insets(30, 30, 30, 30);
             add(fieldNameLabel, layoutConst);
             // Adding subfield label
             layoutConst.gridx = 0;
             layoutConst.gridy = 2;
-            layoutConst.insets = new Insets(30, 30, 30, 30);
             add(subfieldNameLabel, layoutConst);
             // Adding max label
             layoutConst.gridx = 0;
             layoutConst.gridy = 3;
-            layoutConst.insets = new Insets(30, 30, 30, 30);
             add(maxLabel, layoutConst);
             // Adding max week label
             layoutConst.gridx = 2;
             layoutConst.gridy = 3;
-            layoutConst.insets = new Insets(30, 30, 30, 30);
             add(maxWeekLabel, layoutConst);
             // Adding max time label
             layoutConst.gridx = 4;
             layoutConst.gridy = 3;
-            layoutConst.insets = new Insets(30, 30, 30, 30);
             add(maxTimeLabel, layoutConst);
             // Adding average label
             layoutConst.gridx = 0;
             layoutConst.gridy = 4;
-            layoutConst.insets = new Insets(30, 30, 30, 30);
             add(averageLabel, layoutConst);
             // Adding min label
             layoutConst.gridx = 0;
             layoutConst.gridy = 5;
-            layoutConst.insets = new Insets(30, 30, 30, 30);
             add(minLabel, layoutConst);
             // Adding min week label
             layoutConst.gridx = 2;
             layoutConst.gridy = 5;
-            layoutConst.insets = new Insets(30, 30, 30, 30);
             add(minWeekLabel, layoutConst);
             // Adding min time label
             layoutConst.gridx = 4;
             layoutConst.gridy = 5;
-            layoutConst.insets = new Insets(30, 30, 30, 30);
             add(minTimeLabel, layoutConst);
             
             /** Adding the textfield.  */
             // Adding infantID field
             layoutConst.gridx = 1;
             layoutConst.gridy = 0;
-            layoutConst.insets = new Insets(30, 30, 30, 30);
             add(infantIDField, layoutConst);
             // Adding field name
             layoutConst.gridx = 1;
             layoutConst.gridy = 1;
-            layoutConst.insets = new Insets(30, 30, 30, 30);
             add(fieldNameField, layoutConst);
             // Adding subfield
             layoutConst.gridx = 1;
             layoutConst.gridy = 2;
-            layoutConst.insets = new Insets(30, 30, 30, 30);
             add(subfieldNameField, layoutConst);
             // Adding max value
             layoutConst.gridx = 1;
             layoutConst.gridy = 3;
-            layoutConst.insets = new Insets(30, 30, 30, 30);
             add(maxValueField, layoutConst);
             // Adding max week
             layoutConst.gridx = 3;
             layoutConst.gridy = 3;
-            layoutConst.insets = new Insets(30, 30, 30, 30);
             add(maxWeekField, layoutConst);
             // Adding max time
             layoutConst.gridx = 5;
             layoutConst.gridy = 3;
-            layoutConst.insets = new Insets(30, 30, 30, 30);
             add(maxTimeField, layoutConst);
             // Adding average value
             layoutConst.gridx = 1;
             layoutConst.gridy = 4;
-            layoutConst.insets = new Insets(30, 30, 30, 30);
             add(averageValueField, layoutConst);
             // Adding min value
             layoutConst.gridx = 1;
             layoutConst.gridy = 5;
-            layoutConst.insets = new Insets(30, 30, 30, 30);
             add(minValueField, layoutConst);
             // Adding min week
             layoutConst.gridx = 3;
             layoutConst.gridy = 5;
-            layoutConst.insets = new Insets(30, 30, 30, 30);
             add(minWeekField, layoutConst);
             // Adding min time
             layoutConst.gridx = 5;
             layoutConst.gridy = 5;
-            layoutConst.insets = new Insets(30, 30, 30, 30);
             add(minTimeField, layoutConst);
             
             /////////////////////////////////////
@@ -630,7 +636,7 @@ public class InfantFrame extends JFrame
         GridBagConstraints layoutConst = new GridBagConstraints();
         layoutConst.insets = new Insets(10, 10, 10, 10);
         
-        // Selection panel
+        // Display Selection panel
         layoutConst.gridx = 0;
         layoutConst.gridy = 0;
         this.selectionPanel = new SelectionPanel();
@@ -663,7 +669,7 @@ public class InfantFrame extends JFrame
     {
         // Creating a new Infant.
         infant = new Infant(directory, infantID);
-        update();
+        selectionPanel.updateSelections();
     }
 
     /**
@@ -713,23 +719,26 @@ public class InfantFrame extends JFrame
             // Does this field exist and is it not empty
             if (fieldName != null && !fieldName.equals(""))
             {
-                // Which subfield has been selected?
-                subfieldName = selectionPanel.subfieldList.getSelectedValue();
-                // TODO: complete the setting of the defined Strings
-                // What is the max state?
-                maxStateString = infant.getMaxState(fieldName, subfieldName).toString();
-                // What is the max state week?
-                
-                // What is the max state time?
-                
-                // What is the min state?
-                minStateString = infant.getMinState(fieldName, subfieldName).toString();
-                // What is the min state week?
-                
-                // What is the min state time?
-                
-                // What is the average?
-                averageString = infant.getAverageValue(fieldName, subfieldName).toString();
+                // Check subfield not null
+                if (subfieldName != null && !subfieldName.equals(""))
+                {
+                    // Which subfield has been selected?
+                    subfieldName = selectionPanel.subfieldList.getSelectedValue();
+                    // What is the max state?
+                    maxStateString = subInfant.getMaxState(fieldName, subfieldName).toString();
+                    // What is the max state week?
+                    maxStateWeekString = subInfant.getMaxState(fieldName, subfieldName).toString();
+                    // What is the max state time?
+                    //maxStateTimeString = "";
+                    // What is the min state?
+                    minStateString = subInfant.getMinState(fieldName, subfieldName).toString();
+                    // What is the min state week?
+                    //minStateWeekString = "";
+                    // What is the min state time?
+                    //minStateTimeString = "";
+                    // What is the average?
+                    averageString = subInfant.getAverageValue(fieldName, subfieldName).toString();
+                }
             }
             else
             {
