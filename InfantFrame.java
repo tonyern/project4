@@ -343,7 +343,7 @@ public class InfantFrame extends JFrame
         {
             // Background color of the panel
             this.setBackground(new Color(200, 200, 230));
-            //this.rootPoint = createKinematicModel();
+            this.rootPoint = createKinematicModel();
             KinematicPointAbstract.setScale(300.0);
 
             ////////////////////////////////////
@@ -514,8 +514,10 @@ public class InfantFrame extends JFrame
                     this.currentTime = newTime;
                     // Set the timeSlider to the new time.
                     this.timeSlider.setValue(currentTime);
-                    // TODO Extract state for current time and force an update on display.
+                    // Extract state for current time and force an update on display.
                     State state = new State();
+                    state.getPoint("time").getValue("").toString();
+                    
                     update(state);
                 }
                 // Else if new time is not in allowable range then timer is off.
@@ -535,9 +537,9 @@ public class InfantFrame extends JFrame
         public KinematicPointAbstract createKinematicModel()
         {
             // TODO: implement. Root at point (0, 0, 0).
-            KinematicPointConstant root = new KinematicPointConstant(new Color(252, 24, 24), 
-                    LINE_WIDTH, 0, 0, 0);
-
+            KinematicPointConstant root = new KinematicPointConstant(new Color(252, 24, 24), LINE_WIDTH, 0, 0, 0);
+            root.addChild(rootPoint);
+            
             return root;
         }
 
@@ -551,9 +553,17 @@ public class InfantFrame extends JFrame
          */
         private void update(State state)
         {
-            // TODO: implement
-            state = new State();
-            state.
+            // Update the kinematic panels.
+            this.topViewPanel.setState(state);
+            this.sideViewPanel.setState(state);
+            this.rearViewPanel.setState(state);
+            
+            // Update each of the textfields like InfantID and the timestep.
+            infantTextField = new JTextField(state.getTrial().getInfant().getInfantID());
+            timeTextField = new JTextField(state.getPoint("time").getValue("").toString());
+            
+            // Force all components to redraw.
+            repaint();
         }
     }
 
@@ -623,7 +633,6 @@ public class InfantFrame extends JFrame
 
         // Update the selection panel
         this.selectionPanel.updateSelections();
-
     }
 
     /**
