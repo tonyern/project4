@@ -516,8 +516,8 @@ public class InfantFrame extends JFrame
                     this.timeSlider.setValue(currentTime);
                     // Extract state for current time and force an update on display.
                     State state = new State();
-                    state.getPoint("time").getValue("").toString();
-                    
+                    state.getPoint("time").getValue("scalar").toString();
+                    // Force an update.
                     update(state);
                 }
                 // Else if new time is not in allowable range then timer is off.
@@ -536,9 +536,71 @@ public class InfantFrame extends JFrame
          */
         public KinematicPointAbstract createKinematicModel()
         {
-            // TODO: implement. Root at point (0, 0, 0).
+            /** Root point and its children. */
+            // Root at point (0, 0, 0).
             KinematicPointConstant root = new KinematicPointConstant(new Color(252, 24, 24), LINE_WIDTH, 0, 0, 0);
-            root.addChild(rootPoint);
+            // Lower Back at point (0.1, 0, 0).
+            KinematicPointConstant lowerBack = new KinematicPointConstant(new Color(252, 24, 24), LINE_WIDTH, 0.1, 0, 0);
+            // Left Hip at point (0, 0.05, 0).
+            KinematicPointConstant leftHip = new KinematicPointConstant(new Color(252, 24, 24), LINE_WIDTH, 0, 0.05, 0);
+            // Left Hip at point (0, -0.05, 0).
+            KinematicPointConstant rightHip = new KinematicPointConstant(new Color(252, 24, 24), LINE_WIDTH, 0, -0.05, 0);
+            // Adding children to the root.
+            root.addChild(lowerBack);
+            root.addChild(leftHip);
+            root.addChild(rightHip);
+            
+            /** Lower Back and its child Upper Back. */
+            KinematicPointState upperBack = new KinematicPointState(new Color(252, 24, 24), LINE_WIDTH, "upper_back");
+            lowerBack.addChild(upperBack);
+            
+            /** Upper Back and its child Left Shoulder. */
+            KinematicPointState leftShoulder = new KinematicPointState(new Color(252, 24, 24), LINE_WIDTH, "left_shoulder");
+            upperBack.addChild(leftShoulder);
+            
+            /** Upper Back and its child Right Shoulder. */
+            KinematicPointState rightShoulder = new KinematicPointState(new Color(252, 24, 24), LINE_WIDTH, "right_shoulder");
+            upperBack.addChild(rightShoulder);
+            
+            /** Left Shoulder and its child Left Elbow. */
+            KinematicPointState leftElbow = new KinematicPointState(new Color(252, 24, 24), LINE_WIDTH, "left_elbow");
+            leftShoulder.addChild(leftElbow);
+            
+            /** Right Shoulder and its child Right Elbow. */
+            KinematicPointState rightElbow = new KinematicPointState(new Color(252, 24, 24), LINE_WIDTH, "right_elbow");
+            rightShoulder.addChild(rightElbow);
+            
+            /** Left Elbow and its child Left Wrist */
+            KinematicPointState leftWrist = new KinematicPointState(new Color(252, 24, 24), LINE_WIDTH, "left_wrist");
+            leftElbow.addChild(leftWrist);
+            
+            /** Right Elbow and its child Right Wrist */
+            KinematicPointState rightWrist = new KinematicPointState(new Color(252, 24, 24), LINE_WIDTH, "right_wrist");
+            rightElbow.addChild(rightWrist);
+            
+            /** Left Hip and its child Left Knee. */
+            KinematicPointState leftKnee = new KinematicPointState(new Color(252, 24, 24), LINE_WIDTH, "left_knee");
+            leftHip.addChild(leftKnee);
+            
+            /** Right Hip and its child Right Knee. */
+            KinematicPointState rightKnee = new KinematicPointState(new Color(252, 24, 24), LINE_WIDTH, "right_knee");
+            rightHip.addChild(rightKnee);
+            
+            /** Left Knee and its child Left Ankle. */
+            KinematicPointState leftAnkle = new KinematicPointState(new Color(252, 24, 24), LINE_WIDTH, "left_ankle");
+            leftKnee.addChild(leftAnkle);
+            
+            /** Right Knee and its child Right Ankle. */
+            KinematicPointState rightAnkle = new KinematicPointState(new Color(252, 24, 24), LINE_WIDTH, "right_ankle");
+            rightKnee.addChild(rightAnkle);
+            
+            /** Left Ankle and its child Left Foot. */
+            KinematicPointState leftFoot = new KinematicPointState(new Color(252, 24, 24), LINE_WIDTH, "left_foot");
+            leftAnkle.addChild(leftFoot);
+            
+            /** Right Ankle and its child Right Foot. */
+            KinematicPointState rightFoot = new KinematicPointState(new Color(252, 24, 24), LINE_WIDTH, "right_foot");
+            rightAnkle.addChild(rightFoot);
             
             return root;
         }
