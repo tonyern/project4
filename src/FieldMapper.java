@@ -29,15 +29,16 @@ public class FieldMapper implements Iterable<String>
                 // Holds the field.
                 String mainField = columnNames[x].substring(0, columnNames[x].length() - 2);
                 // Holds the subfield.
-                String subFieldLetter = Character.toString(columnNames[x].charAt(columnNames[x].length() - 1));
+                String subFieldLetter = Character.toString(columnNames[x].charAt(
+                        columnNames[x].length() - 1));
                 if (!fieldMap.containsKey(mainField))
                 {
                     fieldMap.put(mainField, new Field());
                     fieldMap.get(mainField).addSubField(subFieldLetter, x);
                 }
-                else 
+                else
                 {
-                	fieldMap.get(mainField).addSubField(subFieldLetter, x);
+                    fieldMap.get(mainField).addSubField(subFieldLetter, x);
                 }
             }
             // If there is no subfield present, adds an empty value to subfield.
@@ -51,7 +52,8 @@ public class FieldMapper implements Iterable<String>
 
     /**
      * Get the Field stored with a string.
-     * @param fieldName is for example left_wrist_x, fieldMapper would split that and left_wrist is the field.
+     * @param fieldName is for example left_wrist_x, fieldMapper would split 
+     * that and left_wrist is the field.
      * @return Field given the String.
      */
     public Field getField(String fieldName)
@@ -76,9 +78,7 @@ public class FieldMapper implements Iterable<String>
             GeneralValue temp = new GeneralValue(stringValues[getField(fieldName).getIndex(subFieldName)]);
             pointMaker.add(subFieldName, temp);
         }
-        
         return pointMaker;
-        
     }
 
     /**

@@ -7,7 +7,7 @@ import org.junit.Test;
 /**
 * Test class for Trial class.
 * 
-* @author Dustin Sy Sengkhamvilay and Tony Nguyen
+* @author Tony Nguyen and Michael Morgan
 * @version 2017-10-23
 * 
  */
@@ -19,7 +19,7 @@ public class TrialTest
      */
     @Test
     public void testTrialConstructor() throws IOException
-    {	
+    {
         // Creates an object to see if it can be passed without error.
         Trial testTrial = new Trial(null, "mydata", "k3", 1);
         assertEquals(0.247648, testTrial.getItem(0).getValue("left_wrist", "z").getDoubleValue(), 0.001);
@@ -170,5 +170,25 @@ public class TrialTest
         Trial testTrial = new Trial(null, "mydata", "k3", 1);
         // Checks if it returns "Week 01".
         assertEquals("Week 01", testTrial.toString());
+        
+        // Creates a Trial object.
+        Trial testTrial2 = new Trial(null, "mydata", "k3", 10);
+        // Checks if it returns "Week 10".
+        assertEquals("Week 10", testTrial2.toString());
+        
+        // Creates a Trial object.
+        Trial testTrial3 = new Trial(null, "mydata", "k3", 9);
+        // Checks if it returns "Week 09".
+        assertEquals("Week 09", testTrial3.toString());
+    }
+    
+    /**
+     * Test fieldMapper
+     */
+    @Test
+    public void testGetFieldMapper() throws IOException
+    {
+        Trial testTrial = new Trial(null, "mydata", "k3", 1);
+        assertNull(testTrial.getFieldMapper());
     }
 }

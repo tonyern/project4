@@ -4,7 +4,7 @@ import java.io.IOException;
 /**
  * Test for the Infant class.
  * 
- * @author Tony Nguyen and Dustin Sengkhamvilay
+ * @author Tony Nguyen and Michael Morgan
  * @version 10/08/17
  *
  */
@@ -15,7 +15,7 @@ public class InfantTest
      * @throws IOException if we can't get the file.
      */
     @Test
-    public void testConstructor() throws IOException
+    public void testFirstConstructor() throws IOException
     {
         Infant testInfant = new Infant("mydata", "k3");
         // Testing that there is data actually loaded.
@@ -23,6 +23,25 @@ public class InfantTest
                 testInfant.getItem(0).getItem(0).getValue("left_wrist", "x").getDoubleValue(), 0.001);
         // Test it exists.
         Assert.assertNotNull(testInfant);
+    }
+    
+    /**
+     * Test the overloaded second constructor.
+     * @throws IOException if we can't get the file.
+     */
+    @Test
+    public void testSecondConstructor() throws IOException
+    {
+        // Creating the weeks we selected.
+        int[] weeks = new int[3];
+        weeks[0] = 1;
+        weeks[1] = 2;
+        weeks[2] = 3;
+        // Creating the infant.
+        Infant testInfant = new Infant("mydata", "k3");
+        // Using the previous infant but get stats for selected week.
+        Infant testInfant2 = new Infant(testInfant, weeks);
+        Assert.assertNotNull(testInfant2);
     }
     
     /**
@@ -67,10 +86,13 @@ public class InfantTest
     
     /**
      * Test the iterator.
+     * @throws IOException if we can't get the file.
      */
     @Test
-    public void testIterator()
+    public void testIterator() throws IOException
     {
-        
+        Infant testInfant = new Infant("mydata", "k3");
+        // See if the iterator exist.
+        Assert.assertNotNull(testInfant.iterator());
     }
 }

@@ -16,7 +16,7 @@ public class PointNDTest
     @Test
     public void testPointNDConstructor()
     {
-    	PointND pointND = new PointND();
+        PointND pointND = new PointND();
         Assert.assertEquals("", pointND.toString());
     }
 

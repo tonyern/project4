@@ -14,6 +14,6 @@ public class InvalidValueException extends RuntimeException
      */
     public InvalidValueException(String message) 
     {
-    	System.out.println("Error, invalid value: " + message);
+        System.out.println("Error, invalid value: " + message);
     }
 }

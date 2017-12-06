@@ -1,8 +1,9 @@
 import java.io.IOException;
+
 /**
  * Driver class that runs the program.
  * 
- * @author Tony Nguyen and Dustin Sengkhamvilay
+ * @author Tony Nguyen and Michael Morgan
  * @version 10/09/17
  */
 public class Driver
@@ -14,6 +15,6 @@ public class Driver
      */
     public static void main(String[] args) throws IOException
     {
-        
+        new InfantFrame();
     }
 }

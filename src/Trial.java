@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Representation of a single trial
  *
- * @author Tony Nguyen and Dustin Sengkhamvilay
+ * @author Tony Nguyen and Michael Morgan
  * @version 2017-10-09
  *
  */
@@ -22,6 +22,9 @@ public class Trial extends MultipleItemAbstract
     
     /** File name that was loaded. */
     private String fileName;
+    
+    /** FieldMapper */
+    private FieldMapper fieldMapper;
     
     /**
      * Trial constructor that takes in directory and ID and access and read data from a file.
@@ -52,7 +55,7 @@ public class Trial extends MultipleItemAbstract
         
         // Use the first line to construct field maps.
         strg = br.readLine();
-        FieldMapper fieldMapper = new FieldMapper(strg.split(","));
+        FieldMapper fieldMapperConstruct = new FieldMapper(strg.split(","));
         
         // Now read the first line of data.
         strg = br.readLine();
@@ -61,7 +64,7 @@ public class Trial extends MultipleItemAbstract
         while (strg != null)  
         {
             // Add to the State with Trial object to our list.
-            stateList.add(new State(this, fieldMapper, strg)); 
+            stateList.add(new State(this, fieldMapperConstruct, strg)); 
             strg = br.readLine();
         }
         // Close the file when finished reading all data.
@@ -120,16 +123,25 @@ public class Trial extends MultipleItemAbstract
      */
     public String toString()
     {
-        int week = getWeek();
+        int weekHolder = getWeek();
         // If week is less than 10 meaning one digit then return with a 0 in front of the week.
         if (week < 10)
         {
-            return "Week 0" + week;
+            return "Week 0" + weekHolder;
         }
-        // Else then just return the week.
+        // Else then just return the week with no zero in front.
         else
         {
-            return "Week " + week;
+            return "Week " + weekHolder;
         }
+    }
+    
+    /**
+     * Get the fieldmapper.
+     * @return fieldMapper for our GUI program.
+     */
+    public FieldMapper getFieldMapper()
+    {
+        return fieldMapper;
     }
 }

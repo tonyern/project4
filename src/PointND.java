@@ -36,7 +36,7 @@ public class PointND implements Iterable<String>
     /**
      * Input the string and it will return the corresponding value stored in the map.
      * @param subFieldName this is like x, y, and z of the left_wrist.
-     * @return values.get(key)
+     * @return values.get(key) or null
      */
     public GeneralValue getValue(String subFieldName)
     {
@@ -47,7 +47,7 @@ public class PointND implements Iterable<String>
         }
         else
         {
-            return null;
+            return new GeneralValue();
         }
     }
 

@@ -46,10 +46,10 @@ public class FieldMapperTest
         String testValues = ("0.02,0.238,2.11");
         FieldMapper testFieldMapper = new FieldMapper(testColumnHeaders.split(","));
         // Tests that the values match up with the values in PointND.
-        Assert.assertEquals(0.02, testFieldMapper.extractPointND
-        		(testValues.split(","), "time").getValue("").getDoubleValue(), 0.001);
-        Assert.assertEquals(0.238, testFieldMapper.extractPointND
-        		(testValues.split(","), "right_wrist").getValue("x").getDoubleValue(), 0.001);
+        Assert.assertEquals(0.02, testFieldMapper.extractPointND(testValues.split(","), 
+                "time").getValue("").getDoubleValue(), 0.001);
+        Assert.assertEquals(0.238, testFieldMapper.extractPointND(testValues.split(","), 
+                "right_wrist").getValue("x").getDoubleValue(), 0.001);
     }
 
     /**

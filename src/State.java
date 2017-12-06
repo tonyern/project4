@@ -44,7 +44,7 @@ public class State extends SingleItemAbstract implements Iterable<String>
         String[] stringValues = values.split(",");
         Iterator<String> loopingFields = fieldMapper.iterator();
         
-        while(loopingFields.hasNext())
+        while (loopingFields.hasNext())
         {
             String tempValue = loopingFields.next();
             // Gets PointND object that tells us how to create fields from the data.
@@ -69,7 +69,7 @@ public class State extends SingleItemAbstract implements Iterable<String>
      */
     public PointND getPoint(String fieldName)
     {
-    	// If it contains this field then returns the value.
+        // If it contains this field then returns the value.
         if (variables.containsKey(fieldName))
         {
             return variables.get(fieldName);
@@ -89,11 +89,10 @@ public class State extends SingleItemAbstract implements Iterable<String>
      */
     public GeneralValue getValue(String fieldName, String subFieldName)
     {
-    	// If it contains this field then returns the GeneralValue which corresponds with it.
+        // If it contains this field then returns the GeneralValue which corresponds with it.
         if (variables.containsKey(fieldName))
         {  
             return variables.get(fieldName).getValue(subFieldName);
-            
         }
         // If it doesn't contain the key then returns an invalid GeneralValue.
         else

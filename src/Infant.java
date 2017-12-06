@@ -5,7 +5,7 @@ import java.util.Iterator;
 /**
  * Representation of a multiple trials.
  *
- * @author Tony Nguyen and Dustin Sengkhamvilay
+ * @author Tony Nguyen and Michael Morgan
  * @version 2017-10-09
  *
  */
@@ -49,13 +49,23 @@ public class Infant extends MultipleItemAbstract implements Iterable<Trial>
     /**
      * Overloaded constructor. This constructor takes in an existing infant and an array of indices.
      * The new infant will have the same infant ID but will have the subset of the original infant's trials.
-     * The subset is defined by the indices. Any illegal indices are ignored. 
+     * The subset is defined by the indices. Any illegal indices are ignored.
      * @param infant is the existing infant.
      * @param indices is an array of values.
      */
     public Infant(Infant infant, int[] indices)
     {
-        // No idea how to use this
+        infantID = infant.getInfantID();
+        trialList = new ArrayList<Trial>();
+        
+        // Looping through all the weeks chosen.
+        for (int i = 0; i < indices.length; i++) 
+        {
+            if (indices[i] >= 0 && indices[i] < infant.getSize())
+            {
+                trialList.add(infant.getItem(indices[i]));
+            }
+        }
     }
     
     /**
@@ -88,6 +98,7 @@ public class Infant extends MultipleItemAbstract implements Iterable<Trial>
     
     /**
      * Iterate over the trials.
+     * @return loopThrough
      */
     public Iterator<Trial> iterator()
     {

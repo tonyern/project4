@@ -18,9 +18,9 @@ public class StateTest
         String testValues = ("0.02,0.238,2.11");
         FieldMapper testFieldMapper = new FieldMapper(testColumnHeaders.split(","));
         State testState = new State(null, testFieldMapper, testValues);
-        assertEquals(testFieldMapper.extractPointND(testValues.split(","), "left_shoulder").
-        		getValue("z").getDoubleValue(), testState.getPoint("left_shoulder").
-        		getValue("z").getDoubleValue(), 0.001);
+        assertEquals(testFieldMapper.extractPointND(testValues.split(","), 
+                "left_shoulder").getValue("z").getDoubleValue(), testState.getPoint(
+                        "left_shoulder").getValue("z").getDoubleValue(), 0.001);
     }
     
     /**
@@ -29,7 +29,6 @@ public class StateTest
     @Test
     public void testGetTrial()
     {
-
         String testColumnHeaders = ("time,right_wrist_x,left_shoulder_z");
         String testValues = ("0.02,0.238,2.11");
         FieldMapper testFieldMapper = new FieldMapper(testColumnHeaders.split(","));
@@ -43,14 +42,13 @@ public class StateTest
     @Test
     public void testGetPoint()
     {
-
         String testColumnHeaders = ("time,right_wrist_x,left_shoulder_z");
         String testValues = ("0.02,0.238,2.11");
         FieldMapper testFieldMapper = new FieldMapper(testColumnHeaders.split(","));
         State testState = new State(null, testFieldMapper, testValues);
-        assertEquals(testFieldMapper.extractPointND(testValues.split(","), "right_wrist").
-        		getValue("x").getDoubleValue(), testState.getPoint("right_wrist").
-        		getValue("x").getDoubleValue(), 0.001);
+        assertEquals(testFieldMapper.extractPointND(testValues.split(","), 
+                "right_wrist").getValue("x").getDoubleValue(), testState.getPoint(
+                        "right_wrist").getValue("x").getDoubleValue(), 0.001);
     }
     
     /**
@@ -59,7 +57,6 @@ public class StateTest
     @Test
     public void testGetValue()
     {
-
         String testColumnHeaders = ("time,right_wrist_x,left_shoulder_z");
         String testValues = ("0.02,0.238,2.11");
         FieldMapper testFieldMapper = new FieldMapper(testColumnHeaders.split(","));
@@ -74,13 +71,12 @@ public class StateTest
     @Test
     public void testGetMaxState()
     {
-
         String testColumnHeaders = ("time,right_wrist_x,left_shoulder_z");
         String testValues = ("0.02,0.238,2.11");
         FieldMapper testFieldMapper = new FieldMapper(testColumnHeaders.split(","));
         State testState = new State(null, testFieldMapper, testValues);
-        assertEquals(0.238, testState.getMaxState("right_wrist", "x").getValue("right_wrist", "x").
-        		getDoubleValue(), 0.001);
+        assertEquals(0.238, testState.getMaxState("right_wrist", "x").getValue(
+                "right_wrist", "x").getDoubleValue(), 0.001);
     }
     
     /**
@@ -89,7 +85,7 @@ public class StateTest
     @Test
     public void testGetMinState()
     {
-    	String testColumnHeaders = ("time,right_wrist_x,left_shoulder_z");
+        String testColumnHeaders = ("time,right_wrist_x,left_shoulder_z");
         String testValues = ("0.02,0.238,2.11");
         FieldMapper testFieldMapper = new FieldMapper(testColumnHeaders.split(","));
         State testState = new State(null, testFieldMapper, testValues);
@@ -102,7 +98,7 @@ public class StateTest
     @Test
     public void testGetAverageState()
     {
-    	String testColumnHeaders = ("time,right_wrist_x,left_shoulder_z");
+        String testColumnHeaders = ("time,right_wrist_x,left_shoulder_z");
         String testValues = ("0.02,0.238,2.11");
         FieldMapper testFieldMapper = new FieldMapper(testColumnHeaders.split(","));
         State testState = new State(null, testFieldMapper, testValues);
@@ -115,10 +111,11 @@ public class StateTest
     @Test
     public void testToString()
     {
-    	String testColumnHeaders = ("time,right_wrist_x,left_shoulder_z");
+        String testColumnHeaders = ("time,right_wrist_x,left_shoulder_z");
         String testValues = ("0.02,0.238,2.11");
         FieldMapper testFieldMapper = new FieldMapper(testColumnHeaders.split(","));
         State testState = new State(null, testFieldMapper, testValues);
-        assertEquals("left_shoulder(z = 2.110; )\nright_wrist(x = 0.238; )\ntime( = 0.020; )\n", testState.toString());
+        assertEquals("left_shoulder(z = 2.110; )\nright_wrist(x = 0.238; )\ntime( = 0.020; )\n", 
+                testState.toString());
     }
 }
